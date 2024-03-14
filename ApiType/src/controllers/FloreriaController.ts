@@ -1,0 +1,72 @@
+import { Request, Response } from 'express';
+import { connection } from '../config/dbconfig';
+import { Floreria } from '../models/Floreria';
+
+export const createFloreria = (req: Request, res: Response) => {
+    const floreria: Floreria = req.body;
+    const query = 'INSERT INTO Florerias SET ?';
+
+    connection.query(query, floreria, (err, result) => {
+        if (err) {
+            console.error('Error al crear florería:', err);
+            res.status(500).json({ message: 'Error interno del servidor' });
+        } else {
+            res.status(201).json({ message: 'Florería creada exitosamente', floreriaID: result.insertId });
+        }
+    });
+};
+
+export const getFloreriaById = (req: Request, res: Response) => {
+    const floreriaID = req.params.id;
+    const query = 'SELECT * FROM Florerias WHERE ID = ?';
+
+    connection.query(query, floreriaID, (err, result) => {
+        if (err) {
+            console.error('Error al obtener florería:', err);
+            res.status(500).json({ message: 'Error interno del servidor' });
+        } else {
+            if (result.length === 0) {
+                res.status(404).json({ message: 'Florería no encontrada' });
+            } else {
+                res.status(200).json(result[0]);
+            }
+        }
+    });
+};
+
+export const updateFloreria = (req: Request, res: Response) => {
+    const floreriaID = req.params.id;
+    const updatedFloreria: Floreria = req.body;
+    const query = 'UPDATE Florerias SET ? WHERE ID = ?';
+
+    connection.query(query, [updatedFloreria, floreriaID], (err, result) => {
+        if (err) {
+            console.error('Error al actualizar florería:', err);
+            res.status(500).json({ message: 'Error interno del servidor' });
+        } else {
+            if (result.affectedRows === 0) {
+                res.status(404).json({ message: 'Florería no encontrada' });
+            } else {
+                res.status(200).json({ message: 'Florería actualizada exitosamente' });
+            }
+        }
+    });
+};
+
+export const deleteFloreria = (req: Request, res: Response) => {
+    const floreriaID = req.params.id;
+    const query = 'DELETE FROM Florerias WHERE ID = ?';
+
+    connection.query(query, floreriaID, (err, result) => {
+        if (err) {
+            console.error('Error al eliminar florería:', err);
+            res.status(500).json({ message: 'Error interno del servidor' });
+        } else {
+            if (result.affectedRows === 0) {
+                res.status(404).json({ message: 'Florería no encontrada' });
+            } else {
+                res.status(200).json({ message: 'Florería eliminada exitosamente' });
+            }
+        }
+    });
+};
