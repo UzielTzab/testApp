@@ -3,6 +3,21 @@ import { connection } from '../config/dbconfig';
 import { Producto } from '../models/Producto';
 
 // Función para crear un nuevo producto
+
+export const getAllProducto = (req: Request, res:Response)=>
+{
+    const query = 'SELECT * FROM Productos';
+
+    connection.query(query, (err, results) => {
+        if (err) {
+            console.error('Error al obtener productos:', err);
+            res.status(500).json({ message: 'Error interno del servidor' });
+        } else {
+            res.status(200).json(results);
+        }
+    });
+}
+
 export const createProducto = (req: Request, res: Response) => {
     const producto: Producto = req.body;
     const query = 'INSERT INTO Producto SET ?';
@@ -20,7 +35,7 @@ export const createProducto = (req: Request, res: Response) => {
 // Función para obtener un producto por su ID
 export const getProductoById = (req: Request, res: Response) => {
     const productoID = req.params.id;
-    const query = 'SELECT * FROM Producto WHERE IDProducto = ?';
+    const query = 'SELECT * FROM Productos WHERE IDProducto = ?';
 
     connection.query(query, productoID, (err, result) => {
         if (err) {

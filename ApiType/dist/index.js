@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
-const mysql_1 = require("mysql");
+const UserRoutes_1 = __importDefault(require("./routes/UserRoutes"));
 const FloreriaRoutes_1 = __importDefault(require("./routes/FloreriaRoutes"));
 const TipoUsuarioRoutes_1 = __importDefault(require("./routes/TipoUsuarioRoutes"));
 const InventarioRoutes_1 = __importDefault(require("./routes/InventarioRoutes"));
@@ -27,6 +27,7 @@ const app = (0, express_1.default)();
 const port = process.env.PORT || 3000;
 // Middleware para manejar datos JSON
 app.use(express_1.default.json());
+app.use('/api', UserRoutes_1.default);
 app.use('/api', FloreriaRoutes_1.default);
 app.use('/api', TipoUsuarioRoutes_1.default);
 app.use('/api', InventarioRoutes_1.default);
@@ -43,23 +44,6 @@ app.use('/api', DireccionesEnvioRoutes_1.default);
 app.use('/api', ComentarioResenaProductoRoutes_1.default);
 app.use('/api', CancelacionesRoutes_1.default);
 app.use('/api', DevolucionesRoutes_1.default);
-// Configuración de la conexión a la base de datos
-const dbConfig = {
-    host: process.env.DB_HOST || 'localhost',
-    user: process.env.DB_USER || 'root',
-    password: process.env.DB_PASSWORD || '',
-    database: process.env.DB_NAME || 'mydatabase'
-};
-// Crear la conexión a la base de datos
-const connection = (0, mysql_1.createConnection)(dbConfig);
-// Conectar a la base de datos
-connection.connect((err) => {
-    if (err) {
-        console.error('Error de conexión a la base de datos:', err);
-        process.exit(1);
-    }
-    console.log('Conexión a la base de datos establecida correctamente');
-});
 // Iniciar el servidor
 app.listen(port, () => {
     console.log(`Servidor escuchando en el puerto ${port}`);

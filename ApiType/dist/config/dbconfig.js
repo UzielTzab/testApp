@@ -12,7 +12,7 @@ const dbConfig = {
     host: process.env.DB_HOST || 'localhost',
     user: process.env.DB_USER || 'root',
     password: process.env.DB_PASSWORD || '',
-    database: process.env.DB_NAME || 'mydatabase'
+    database: process.env.DB_DATABASE || 'mydatabase'
 };
 exports.dbConfig = dbConfig;
 // Crear la conexión a la base de datos
@@ -24,5 +24,7 @@ connection.connect((err) => {
         console.error('Error de conexión a la base de datos:', err);
         process.exit(1);
     }
-    console.log('Conexión a la base de datos establecida correctamente');
+    else {
+        console.log('Conexión a la base de datos establecida correctamente');
+    }
 });

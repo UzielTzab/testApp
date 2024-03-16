@@ -1,6 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import { createConnection } from 'mysql';
+import userRoutes from './routes/UserRoutes';
 import floreriaRoutes from './routes/FloreriaRoutes';
 import tipoUsuarioRoutes from './routes/TipoUsuarioRoutes';
 import inventarioRoutes from './routes/InventarioRoutes';
@@ -27,6 +28,7 @@ const port = process.env.PORT || 3000;
 // Middleware para manejar datos JSON
 app.use(express.json());
 
+app.use('/api', userRoutes);
 app.use('/api', floreriaRoutes);
 app.use('/api', tipoUsuarioRoutes);
 app.use('/api', inventarioRoutes);
@@ -45,25 +47,9 @@ app.use('/api', cancelacionesRoutes);
 app.use('/api', devolucionesRoutes);
 
 
-// Configuración de la conexión a la base de datos
-const dbConfig = {
-    host: process.env.DB_HOST || 'localhost',
-    user: process.env.DB_USER || 'root',
-    password: process.env.DB_PASSWORD || '',
-    database: process.env.DB_NAME || 'mydatabase'
-};
 
-// Crear la conexión a la base de datos
-const connection = createConnection(dbConfig);
 
-// Conectar a la base de datos
-connection.connect((err) => {
-    if (err) {
-        console.error('Error de conexión a la base de datos:', err);
-        process.exit(1);
-    }
-    console.log('Conexión a la base de datos establecida correctamente');
-});
+
 
 // Iniciar el servidor
 app.listen(port, () => {

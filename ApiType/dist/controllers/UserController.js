@@ -1,7 +1,20 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUser = exports.updateUser = exports.getUserById = exports.createUser = void 0;
+exports.deleteUser = exports.updateUser = exports.getUserById = exports.createUser = exports.getAllUsers = void 0;
 const dbconfig_1 = require("../config/dbconfig");
+const getAllUsers = (req, res) => {
+    const query = 'SELECT * FROM Usuarios';
+    dbconfig_1.connection.query(query, (err, results) => {
+        if (err) {
+            console.error('Error al obtener usuarios:', err);
+            res.status(500).json({ message: 'Error interno del servidor' });
+        }
+        else {
+            res.status(200).json(results);
+        }
+    });
+};
+exports.getAllUsers = getAllUsers;
 const createUser = (req, res) => {
     const user = req.body;
     const query = 'INSERT INTO Usuarios SET ?';
