@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 import { connection } from '../config/dbconfig';
 import { User } from '../models/User';
 
+
 export const getUserByEmailAndPassword= (req: Request, res:Response)=>
 {
     const {email, password} = req.params;
