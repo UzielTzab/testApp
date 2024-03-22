@@ -2,6 +2,21 @@ import { Request, Response } from 'express';
 import { connection } from '../config/dbconfig';
 import { Floreria } from '../models/Floreria';
 
+
+export const getAllFlowers = ((req: Request, res:Response)=>{
+    const query = 'SELECT * FROM Florerias';
+
+    connection.query(query, (err, results)=>{
+        if (err) {
+            console.error('Error al obtener florerias:', err);
+            res.status(500).json({message: 'Error interno del servidor'});
+        }
+        else{
+            res.status(200).json(results);
+        }
+    });
+});
+
 export const createFloreria = (req: Request, res: Response) => {
     const floreria: Floreria = req.body;
     const query = 'INSERT INTO Florerias SET ?';
