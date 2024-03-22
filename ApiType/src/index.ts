@@ -1,7 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
-
-import { createConnection } from 'mysql';
+import cors from 'cors';
 import userRoutes from './routes/UserRoutes';
 import floreriaRoutes from './routes/FloreriaRoutes';
 import tipoUsuarioRoutes from './routes/TipoUsuarioRoutes';
@@ -27,7 +26,7 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 3000;
 
-
+app.use(cors());
 
 // Middleware para manejar datos JSON
 app.use(express.json());
